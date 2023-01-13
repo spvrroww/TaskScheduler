@@ -1,0 +1,112 @@
+﻿@page "/dashboard"
+@using Microsoft.AspNetCore.Authorization
+@using Common
+@inject IJSRuntime js
+@attribute [Authorize(Roles = SD.role_Customer)]
+
+
+<div class="p-5">
+
+    <div class="row">
+        <div class="col-4">
+            <EditForm Model="Appointment">
+                <div class="myform">
+                    
+                    <div class="row myform-control">
+                        <div class="col-4">
+                            <label>
+                                Calendar
+                                <InputSelect @bind-Value="Appointment.Category">
+                                    <option value="personal">Personal</option>
+                                    <option value="work">work</option>
+                                    <option value="others">others</option>
+                                </InputSelect>
+
+                            </label>
+                        </div>
+
+                        <div class="col-7">
+                            <div class="bg-secondary rounded-2 p-2 text-white">@DateTime.Now.ToString("dd/MM/yyyy")</div>
+                        </div>
+
+                    </div>
+
+                    <div class="row  myform-control">
+                        <div class="col-4">
+                            <label>
+                                Start Date:
+                            <InputDate @bind-Value="Appointment.Start" />
+                            </label>
+                        </div>
+                        <div class="col-4">
+                            <label>
+                                End Date:
+                            <InputDate @bind-Value="Appointment.End" />
+                            </label>
+                        </div>
+
+                    </div>
+
+                     <div class="row myform-control">
+                       <label>
+                           Title:
+                           <InputText @bind-Value="Appointment.Title"/>
+                       </label>
+                    </div>
+
+                    <div class="row myform-control">
+                       <label>
+                           Description:
+                           <InputTextArea  @bind-Value="Appointment.Description" rows="5"/>
+                       </label>
+                    </div>
+
+                    <div class="row myform-control">
+                       <div class="col-3">
+                           <button type="button"> cancel</button>
+                       </div>
+                       <div class="col-3">
+                           <button type="button"> save</button>
+                       </div>
+                    </div>
+
+
+
+                </div>
+            </EditForm>
+        </div>
+        <div class="col-8">
+            <div class="d-flex gap-2">
+                <button class="btn btn-secondary" disabled> @DateTime.Now.ToString("dd/MM/yyyy") </button>
+                <button id="previous" class="btn btn-outline-secondary p-2 "> prev </button>
+                <button id="next" class="btn btn-outline-secondary p-2"> next </button>
+                <button id="month" class="btn btn-outline-secondary p-2"> Monthly </button>
+                <button id="week" class="btn btn-outline-secondary p-2"> Weekly </button>
+                <button id="day" class="btn btn-outline-secondary p-2"> Daily </button>
+                <button id="today" class="btn btn-outline-secondary p-2"> today </button>
+
+            </div>
+            <div id="sidecalendar" ></div>
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("CalendarInit");
+    }
+
+
+}
