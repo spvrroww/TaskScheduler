@@ -15,6 +15,6 @@ namespace Business.Repository.IRepository
         public Task<IQueryable<T>> GetByCriteriaAsync(Expression<Func<T, bool>> criteria, bool trackChanges);
         public Task<IQueryable<T>> GetAllAsync(bool trackChanges);
         public void Delete(T entity);
-        public Task<bool> Save();
+      
     }
 }

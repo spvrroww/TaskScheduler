@@ -12,13 +12,13 @@
                     <div class="col-md-8">
                         <div class="mb-4">
                             <h3>Sign In</h3>
-                            <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
+
                         </div>
                         <form asp-action="Login" asp-controller="Account" method="post">
                             <div class="form-group first">
                                 <label for="username">Username</label>
                                 <input asp-for="Username" type="text" class="form-control" id="username">
-                                <span asp-validation-for="Username" class="mt-3 text-danger"  style="margin-top:8px"></span>
+                                <span asp-validation-for="Username" class="mt-3 text-danger" style="margin-top:8px"></span>
 
                             </div>
                             <div class="form-group last mb-4">
@@ -28,35 +28,41 @@
 
                             </div>
 
-                            <div class="d-flex mb-5 align-items-center">
-                                <label class="control control--checkbox mb-0">
-                                    <span class="caption">Remember me</span>
-                                    <input asp-for="Remember" type="checkbox" checked="checked" />
-                                    <div class="control__indicator"></div>
-                                </label>
-                                <span class="ml-auto" style="margin-left:auto"><a href="#" class="forgot-pass">Forgot Password</a></span>
+                            @*  <div class="d-flex mb-5 align-items-center">
+                            <label class="control control--checkbox mb-0">
+                            <span class="caption">Remember me</span>
+                            <input asp-for="Remember" type="checkbox" checked="checked" />
+                            <div class="control__indicator"></div>
+                            </label>
+                            <span class="ml-auto" style="margin-left:auto"><a href="#" class="forgot-pass">Forgot Password</a></span>
+                            </div>*@
+
+                            <div class="d-flex">
+                                <div class="w-50">
+                                    <input type="submit" value="Log In" class="btn btn-block btn-primary">
+                                </div>
+
+                                <div class="w-50">
+                                    <p class="mb-0" style="float:right;">Don't have an account?</p><a asp-action="register" class=" btn-secondary text-white bg-secondary text-decoration-none p-1 rounded-2 " style="margin-left:4px; float:right">Create One</a>
+                                </div>
                             </div>
 
-                            <input type="submit" value="Log In" class="btn btn-block btn-primary">
-
-                            <span class="d-block text-left my-4 text-muted">&mdash; or login with &mdash;</span>
+                            @* <span class="d-block text-left my-4 text-muted">&mdash; or login with &mdash;</span>
 
                             <div class="social-login">
-                                <a href="#" class="facebook">
-                                    <span class="icon-facebook mr-3"></span>
-                                    
-                                </a>
-                                <a href="#" class="twitter">
-                                    <span class="icon-twitter mr-3"></span>
-                                </a>
-                                <a href="#" class="google">
-                                    <span class="icon-google mr-3"></span>
-                                </a>
-                            </div>
+                            <a href="#" class="facebook">
+                            <span class="icon-facebook mr-3"></span>
 
-                            <div>
-                               <span>Don't have an account?</span><a asp-action="register" class=" btn-secondary text-white text-decoration-none p-1 rounded-2" style="margin-left:4px">Create One</a>
-                            </div>
+                            </a>
+                            <a href="#" class="twitter">
+                            <span class="icon-twitter mr-3"></span>
+                            </a>
+                            <a href="#" class="google">
+                            <span class="icon-google mr-3"></span>
+                            </a>
+                            </div>*@
+
+                            
                         </form>
                     </div>
                 </div>
@@ -69,4 +75,4 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial">
-}
+    }

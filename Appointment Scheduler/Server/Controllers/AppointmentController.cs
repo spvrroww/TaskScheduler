@@ -62,7 +62,7 @@ namespace Appointment_Scheduler.Server.Controllers
                  _appointmentRepository.Delete(entity);
                 
             }
-            return Ok(_appointmentRepository.Save());
+            return Ok(/*_appointmentRepository.Save()*/);
 
         }
 

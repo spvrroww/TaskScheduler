@@ -27,6 +27,7 @@ namespace Appointment_Scheduler.Server.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserProfileRepository _userProfileRepository;
+    
   
         private readonly JwtHelper _jwtHelper;
 
@@ -130,7 +131,7 @@ namespace Appointment_Scheduler.Server.Controllers
                         if (roleResult.Succeeded)
                         {
                             var profile = await _userProfileRepository.CreateAsync(new UserProfile { FirstName = newUser.FirstName, LastName = newUser.LastName, Username = newUser.UserName });
-                            await _userProfileRepository.Save();
+                            //await _userProfileRepository.Save();
                             if (profile is not null)
                             {
                                 return Ok(new RegistrationResponseDTO { IsSuccessful = true, Profile = profile.MapToUserProfileDTO(_mapper) });

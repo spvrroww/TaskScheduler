@@ -14,6 +14,7 @@ namespace Business.Helper.Specifications
             {
                 var queryable = inputQueryable.Where(specification.Criteria);
 
+
                 if(specification.OrderBy is not null)
                 {
                     queryable = queryable.OrderBy(specification.OrderBy);
@@ -29,9 +30,9 @@ namespace Business.Helper.Specifications
                     queryable = queryable.Skip(specification.Skip.Value);
                 }
 
-                if (specification.Skip is not null)
+                if (specification.Take is not null)
                 {
-                    queryable = queryable.Skip(specification.Take.Value);
+                    queryable = queryable.Take(specification.Take.Value);
                 }
 
                 return queryable;

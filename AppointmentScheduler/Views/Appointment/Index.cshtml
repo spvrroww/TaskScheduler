@@ -1,60 +1,132 @@
-﻿
+﻿@using Models
+@model AppointmentDTO
+
+@{
+    var tasks = ViewBag.Tasks as List<KeyValuePair<string, int>>;
+}
+
+
+@*CREATE NEW APPOINTMENT*@
 <div class="mymodalclass hidemodal" id="mymodal">
     <div class="mymodalmain">
         <div style="display: flex; justify-content:center;"><h4> Add Task</h4></div>
-        <form>
+        <form id="appform" asp-action="CreateEvent" method="post">
+
+            <input type="text" asp-for="ProfileId" value="@ViewBag.profileId" class="d-none" />
             <div>
                 <div class="row">
-                    <div class="form-group col-lg-6 col-sm-12 ">
+                    <div class="form-group col-lg-6 col-sm-12">
                         <label>
                             Start date
                         </label>
-                        <input id="startdate" type="date" class="form-control" />
-
-
+                        <input id="startdate" type="datetime-local" class="form-control" asp-for="Start" />
 
                     </div>
                     <div class="form-group col-lg-6 col-sm-12">
                         <label>
                             End date
                         </label>
-                        <input id="enddate" type="date" class="form-control" />
+                        <input id="enddate" type="datetime-local" class="form-control" asp-for="End" />
 
                     </div>
 
                 </div>
 
-                <div class="form-group ">
-                    <label>
-                        Time
-                    </label>
-                    <input type="time" class="form-control" />
 
-                </div>
+                @* <div class="form-group ">
+                <label>
+                Time
+                </label>
+                <input id="enddate" type="time" class="form-control" asp-for="Start.TimeOfDay" />
+
+                </div>*@
 
 
                 <div class="form-group" style="margin-top:10px">
                     <label for="formselect"> calendar </label>
-                    <select  type="text" class="form-control" id="formselect" >
-                        <option value="personal"> Personal </option>
-                         <option value="work"> Work </option>
-                          <option value="others"> Others </option>
+                    <select asp-for="Category" type="text" class="form-control" id="formselect">
+                        <option value="personal" selected> Personal </option>
+                        <option value="work"> Work </option>
+                        <option value="others"> Others </option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label> Title </label>
-                    <input type="text" class="form-control" />
+                    <input asp-for="Title" type="text" class="form-control" />
                 </div>
 
                 <div class="form-group">
                     <label> Description </label>
-                    <textarea class="form-control" rows="5"></textarea>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
 
                 </div>
+                <div class="d-flex">
+                    <button class="btn btn-primary mt-2 col-5">Create</button>
+                    <button type="button" class="btn btn-danger mt-2 col-5 " style="margin-left:auto" onclick="showHideModal('mymodal')">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*UPDATE APPOINTMENT*@
+<div class="mymodalclass hidemodal" id="mymodaledit">
+    <div class="mymodalmain">
+        <div style="display: flex; justify-content:center;"><h4> Add Task</h4></div>
+        <form id="appformedit" asp-action="UpdateEvent" method="post">
+            <input asp-for="Id" type="text" style=" display: none" />
+            <div>
                 <div class="row">
-                <button class="btn btn-primary mt-2 col-5">Create</button>
-                <button type="button" class="btn btn-danger mt-2 col-5 ml-auto" onclick="showHideModal()">Cancel</button>
+                    <div class="form-group col-lg-6 col-sm-12">
+                        <label>
+                            Start date
+                        </label>
+                        <input id="editstartdate" type="datetime-local" class="form-control" asp-for="Start" />
+                    </div>
+
+                    <div class="form-group col-lg-6 col-sm-12">
+                        <label>
+                            End date
+                        </label>
+                        <input id="editenddate" type="datetime-local" class="form-control" asp-for="End" />
+
+                    </div>
+
+                </div>
+
+
+                @* <div class="form-group ">
+                <label>
+                Time
+                </label>
+                <input id="enddate" type="time" class="form-control" asp-for="Start.TimeOfDay" />
+
+                </div>*@
+
+
+                <div class="form-group" style="margin-top:10px">
+                    <label for="formselect"> calendar </label>
+                    <select asp-for="Category" type="text" class="form-control" id="formselect">
+                        <option value="personal" selected> Personal </option>
+                        <option value="work"> Work </option>
+                        <option value="others"> Others </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label> Title </label>
+                    <input asp-for="Title" type="text" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label> Description </label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+
+                </div>
+                <div class="d-flex">
+                    <button class="btn btn-primary mt-2 col-5">Update</button>
+                    <button type="button" class="btn btn-danger mt-2 col-5 " style="margin-left:auto" onclick="showHideModal('mymodaledit')">Cancel</button>
                 </div>
             </div>
         </form>
@@ -62,20 +134,90 @@
 </div>
 
 
+@*DISPLAY APPOINTMENT DETAILS*@
+<div id="appmodal" style="padding:20px; background-color:#f0f5f5; z-index:4; display:none; box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px; position:absolute; top:50px; left:50px; border-radius:10px;">
 
+    <button id="appmodal-close" style="border:none; display:flex; border-radius:100%; padding:0px 4px 0px 4px; background-color:rgba(179, 0, 0, 0.37) ; color:white; position:absolute;right: 5px; top: 5px;"><p style="margin:-2px 0px 0px 0px; font-size:12px; padding:0;">x</p></button>
+
+
+    <p style="font-size: 14px; font-weight:bold; text-align:center" id="appmodal-duration">  </p>
+    <div>
+        <div style="background-color:#efeff5; border-radius:5px; display:inline-block"> <p id="appmodal-time">10:30am - 11:30pm</p></div>
+        <p id="appmodal-description"> </p>
+
+    </div>
+
+    <div style="display:flex; gap: 10px; width:100%">
+        <button id="appmodal-edit" onclick="showHideModal('mymodaledit')">Edit</button>
+        <button id="appmodal-delete"> Delete</button>
+    </div>
+</div>
+
+@*INITIALIZE CALENDAR*@
 <div class="p-3">
-    <div class="d-flex w-100 justify-content-end">
-        <a href="#"><i class="fa-regular fa-power-off"></i></a>
+    <div class="d-flex w-100 justify-content-end mb-3">
+        <a asp-action="Logout" asp-controller="Account" style="color: darkred; text-decoration:none"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
 
+    <div class="row">
+        <div class="col-lg-3 col-sm-12 d-sm-none d-lg-block ">
+
+            <div class="card text-white bg-secondary mb-3" style=" max-height:60vh; ">
+                <div class="card-header "> <h5> Frequent Tasks </h5> </div>
+                <div class="card-body" style="overflow-y:scroll">
+                    @if (tasks is not null && tasks.Any())
+                    {
+                        <ul class="tasklist" style="list-style-type:none; padding:0px; ">
+                            @foreach (var kvp in tasks)
+                            {
+                                <li class="animate__animated animate__backInLeft mb-2 p-2" style=" background: rgba(255, 255, 255, 0.21); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                                backdrop-filter: blur(0.8px); -webkit-backdrop-filter: blur(0.8px); border: 1px solid rgba(255, 255, 255, 0.35);">
+                                <div class="row">
+                                    <div class="col-9">
+                                        @kvp.Key
+                                    </div>
+
+                                    <div class="col-3">
+                                         @kvp.Value
+                                    </div>
+                                </div>
+                                
+                                </li>
+                            }
+
+                        </ul>
+                    }
+
+                </div>
+            </div>
 
 
-    <div style="display:flex; justify-content:space-between">
-         <div id="calendar" style="width: 40%"> </div>
-         <div style="width: 40%"> this div</div>
+             <div class="card text-white bg-secondary mb-3" style="">
+                <div class="card-header"> <h5> Analysis </h5> </div>
+                <div class="card-body">
+                    <div class="d-flex w-100 justify-content-center align-items-center">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                   
+
+                </div>
+            </div>
+
+        
+            
+
+
+
+
+
+        </div>
+
+        <div id="calendar" class="col-lg-9 col-sm-12"> </div>
     </div>
-   
-
 
 </div>
 
+
+@section Scripts{
+    <script src="~/js/CalendarInit.js"></script>
+}

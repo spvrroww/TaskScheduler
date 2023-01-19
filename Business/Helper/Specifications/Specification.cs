@@ -17,6 +17,7 @@ namespace Business.Helper.Specifications
         public Expression<Func<TEntity,bool>> Criteria { get; private set; }
         public Expression<Func<TEntity, object>>? OrderBy { get; private set; }
         public Expression<Func<TEntity, object>>? OrderByDescending { get; private set; }
+      
         public int? Skip { get; private set; }
         public int? Take { get; private set; }
 
@@ -39,6 +40,7 @@ namespace Business.Helper.Specifications
         {
             Take = take;
         }
+      
 
 
 

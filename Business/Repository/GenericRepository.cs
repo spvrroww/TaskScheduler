@@ -30,7 +30,9 @@ namespace Business.Repository
 
         public async Task<T> UpdateAsync(T entity) => (_db.Set<T>().Update(entity)).Entity;
 
-        public async Task<bool> Save() => await _db.SaveChangesAsync() > 0;
+        
+
+      
        
     }
 }

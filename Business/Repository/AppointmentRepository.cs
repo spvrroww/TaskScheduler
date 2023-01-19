@@ -9,6 +9,7 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,30 +17,19 @@ namespace Business.Repository
 {
     public class AppointmentRepository : GenericRepository<Appointment>, IAppointmentRepository
     {
+        private readonly ApplicationDbContext _db;
         public AppointmentRepository(ApplicationDbContext db): base(db)
         {
+            _db = db;
         }
 
-        //public async Task<Appointment> CreateAppointment(Appointment appointment) => await CreateAsync(appointment);
+  
 
-        //public async Task<Appointment> GetAppointment(int id, bool trackChanges) => (await GetByCriteriaAsync(x => x.Id == id, trackChanges)).FirstOrDefault();
+        public async Task<int> GetCountByCriteria(Expression<Func<Appointment, bool>> criteria)
+        {     
+            return _db.Appointments.Count(criteria);
+        }
 
-        //public async Task<IEnumerable<Appointment>> GetAppointments(int profileId, bool trackChanges) => await GetByCriteriaAsync(x => x.profileId == profileId, trackChanges);
-
-        //public async Task<bool> DeleteAppointment(int id)
-        //{
-        //    var appointment = await GetAppointment(id, true);
-        //    if(appointment is not null)
-        //    {
-        //         Delete(appointment);
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
-
+        
     }
 }
