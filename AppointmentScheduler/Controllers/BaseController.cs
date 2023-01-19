@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace AppointmentScheduler.Controllers
 {
+    
     public class BaseController<T> : Controller where T : BaseController<T>
     {
 

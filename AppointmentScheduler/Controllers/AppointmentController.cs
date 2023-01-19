@@ -2,11 +2,13 @@
 using AppointmentScheduler.Services.ISevices;
 using Business.Helper;
 using DataAccess.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
 namespace AppointmentScheduler.Controllers
 {
+    [Authorize]
     public class AppointmentController : BaseController<AppointmentController>
     {
         private readonly RepositoryService _repositoryService;
