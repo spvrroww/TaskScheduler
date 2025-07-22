@@ -15,10 +15,6 @@ on:
         required: false
         type: string
         default: 'ubuntu-latest'
-      ENVIRONMENT:
-        required: false
-        type: string
-        default: 'Development'
       DEPLOYMENT_STORAGE_ACCOUNT_NAME:
         required: true
         type: string
@@ -36,7 +32,6 @@ jobs:
   build:
     runs-on: ${{ inputs.RUNNER }}
     name: Build and Deploy to AWS EBS
-    environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
