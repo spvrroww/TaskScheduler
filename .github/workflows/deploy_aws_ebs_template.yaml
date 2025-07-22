@@ -31,28 +31,28 @@ on:
 jobs:
   build:
     runs-on: ${{ inputs.RUNNER }}
-    name: Build and Deploy to AWS EBS
+    name: Package
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
+      # - name: Set up dotnet
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: '9.0.x'
       
-      - name: Restore dependencies
-        run: dotnet restore
+      # - name: Restore dependencies
+      #   run: dotnet restore
 
-      - name: Build the project
-        run: dotnet build --configuration Release --no-restore
+      # - name: Build the project
+      #   run: dotnet build --configuration Release --no-restore
       
-      - name: Publish the project
-        run: dotnet publish --configuration Release --output ./publish --no-build
+      # - name: Publish the project
+      #   run: dotnet publish --configuration Release --output ./publish --no-build
 
       - name: Create deployment package
         run: |
-          cd publish
+          
           zip -r ../deploy.zip . -x '*.git*'
           cd ..
 
