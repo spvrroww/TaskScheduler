@@ -34,9 +34,9 @@ on:
       
 jobs:
   build:
-    environment: ${{ inputs.ENVIRONMENT }}
     runs-on: ${{ inputs.RUNNER }}
     name: Build and Deploy to AWS EBS
+    environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
