@@ -1,0 +1,100 @@
+name: aws-ebstalk-template
+on:
+  workflow_call:
+    inputs: 
+      AWS_EBSTALK_APPLICATION_NAME:
+        required: true
+        type: string
+      AWS_EBSTALK_ENVIRONMENT_NAME:
+        required: true
+        type: string
+      AWS_EBSTALK_REGION:
+        required: true
+        type: string
+      RUNNER:
+        required: false
+        type: string
+        default: 'ubuntu-latest'
+      ENVIRONMENT:
+        required: false
+        type: string
+        default: 'Development'
+      DEPLOYMENT_STORAGE_ACCOUNT_NAME:
+        required: true
+        type: string
+      EB_APP_VERSION_LABEL:
+        required: true
+        type: string
+
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true 
+      
+jobs:
+  build:
+    runs-on: ${{ inputs.RUNNER }}
+    name: Build and Deploy to AWS EBS
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release --no-restore
+      
+      - name: Publish the project
+        run: dotnet publish --configuration Release --output ./publish --no-build
+
+      - name: Create deployment package
+        run: |
+          cd publish
+          zip -r ../deploy.zip . -x '*.git*'
+          cd ..
+
+      - name: Upload artifact to S3
+        run: |
+          aws s3 cp deploy.zip s3://${{ inputs.DEPLOYMENT_STORAGE_ACCOUNT_NAME }}/artifacts/
+
+      - name: Upload deployment package
+        id: artifact-upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: packaged-artifact
+          path: deploy.zip
+
+  deploy:
+    runs-on: ${{ inputs.RUNNER }}
+    needs: build
+    environment: ${{ inputs.ENVIRONMENT }}
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create new EB version
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name ${{ inputs.AWS_EBSTALK_APPLICATION_NAME }} \
+            --version-label ${{ inputs.EB_APP_VERSION_LABEL}} \
+            --source-bundle S3Bucket=${{ inputs.DEPLOYMENT_STORAGE_ACCOUNT_NAME }},S3Key=artifacts/deploy.zip
+
+      - name: Deploy to EB
+        run: |
+          aws elasticbeanstalk update-environment \
+            --environment-name ${{ inputs.AWS_EBSTALK_ENVIRONMENT_NAME }} \
+            --version-label ${{ inputs.EB_APP_VERSION_LABEL }}
+
+
+
