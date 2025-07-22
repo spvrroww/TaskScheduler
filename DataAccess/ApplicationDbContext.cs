@@ -36,20 +36,21 @@ namespace DataAccess
 
         private string GetConnectionString()
         {
-            if (_configuration["ENVIRONMENT"].Equals("development", StringComparison.OrdinalIgnoreCase))
-            {
-                _logger.LogInformation("Using dev environment variables for database connection string.");
-                return _configuration.GetConnectionString("DefaultConnection");
-            }
+            // if (_configuration["ENVIRONMENT"].Equals("development", StringComparison.OrdinalIgnoreCase))
+            // {
+            //     _logger.LogInformation("Using dev environment variables for database connection string.");
+            //     return _configuration.GetConnectionString("DefaultConnection");
+            // }
 
-            _logger.LogInformation("Using Prod environment variables for database connection string.");
+            // _logger.LogInformation("Using Prod environment variables for database connection string.");
 
-            var dbName = _configuration["DB_NAME"];
-            var dbHost = _configuration["DB_HOST"];
-            var dbUsername = _configuration["DB_USERNAME"];
-            var dbPassword = _configuration["DB_PASSWORD"];
+            // var dbName = _configuration["DB_NAME"];
+            // var dbHost = _configuration["DB_HOST"];
+            // var dbUsername = _configuration["DB_USERNAME"];
+            // var dbPassword = _configuration["DB_PASSWORD"];
 
-            return  $"Server={dbHost};Database={dbName};MultipleActiveResultSets=true;User Id={dbUsername};Password={dbPassword}";
+            // return $"Server={dbHost};Database={dbName};MultipleActiveResultSets=true;User Id={dbUsername};Password={dbPassword}";
+            return  $"Server=task-scheduler-db.c540ck8yyn9j.eu-north-1.rds.amazonaws.com,1433;Database=appdb;MultipleActiveResultSets=true;User Id=admin;Password=AburotY399hndcm29dil";
         }
 
         public DbSet<Appointment> Appointments { get; set; }
