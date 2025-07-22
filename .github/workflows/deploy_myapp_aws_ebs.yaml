@@ -14,7 +14,7 @@ jobs:
       AWS_EBSTALK_ENVIRONMENT_NAME: ${{ vars.AWS_EBSTALK_ENVIRONMENT_NAME }}
       AWS_EBSTALK_REGION: ${{ vars.AWS_EBSTALK_REGION }}
       RUNNER: ubuntu-latest
-      ENVIRONMENT: ${{ matrix.env }}
+      ENVIRONMENT: production
       DEPLOYMENT_STORAGE_ACCOUNT_NAME: ${{ vars.DEPLOYMENT_STORAGE_ACCOUNT_NAME }}
       EB_APP_VERSION_LABEL: ${{ vars.EB_APP_VERSION_LABEL }}
     secrets:
