@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace DataAccess
     public class ApplicationDbContext: IdentityDbContext<AppUser>
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger<ApplicationDbContext> _logger;
 
-        public ApplicationDbContext(DbContextOptions options, IConfiguration configuration) : base(options)
+        public ApplicationDbContext(DbContextOptions options, IConfiguration configuration, ILogger<ApplicationDbContext> logger) : base(options)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -35,8 +38,11 @@ namespace DataAccess
         {
             if (_configuration["ENVIRONMENT"].Equals("development", StringComparison.OrdinalIgnoreCase))
             {
+                _logger.LogInformation("Using dev environment variables for database connection string.");
                 return _configuration.GetConnectionString("DefaultConnection");
             }
+
+            _logger.LogInformation("Using Prod environment variables for database connection string.");
 
             var dbName = _configuration["DB_NAME"];
             var dbHost = _configuration["DB_HOST"];

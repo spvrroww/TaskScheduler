@@ -1,6 +1,7 @@
 using AppointmentScheduler.Middleware;
 using AppointmentScheduler.Services;
 using AppointmentScheduler.Services.ISevices;
+using Business.Helper;
 using Business.Repository;
 using Business.Repository.IRepository;
 using DataAccess;
@@ -12,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(config => config.AddProfile(typeof(MappingProfile)));
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddIdentity<AppUser, IdentityRole>( o=> { o.Password.RequireNonAlphanumeric= false; }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
