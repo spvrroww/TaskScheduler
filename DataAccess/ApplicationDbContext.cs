@@ -50,7 +50,6 @@ namespace DataAccess
             // var dbPassword = _configuration["DB_PASSWORD"];
 
             // return $"Server={dbHost};Database={dbName};MultipleActiveResultSets=true;User Id={dbUsername};Password={dbPassword}";
-            return  $"Server=task-scheduler-db.c540ck8yyn9j.eu-north-1.rds.amazonaws.com,1433;Database=appdb;MultipleActiveResultSets=true;User Id=admin;Password=AburotY399hndcm29dil";
         }
 
         public DbSet<Appointment> Appointments { get; set; }
