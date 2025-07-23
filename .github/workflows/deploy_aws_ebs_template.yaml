@@ -21,6 +21,9 @@ on:
       EB_APP_VERSION_LABEL:
         required: true
         type: string
+      STARTUP_PROJECT_PATH:
+        required: true
+        type: string
 
     secrets:
       AWS_ACCESS_KEY_ID:
@@ -43,7 +46,7 @@ jobs:
       
       - name: Restore dependencies
         run: |
-          cd AppointmentScheduler 
+          cd ${{ inputs.STARTUP_PROJECT_PATH }} 
           dotnet restore
 
       - name: Build the project
