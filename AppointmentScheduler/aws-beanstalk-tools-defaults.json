@@ -1,0 +1,14 @@
+
+{
+    "region" : "eu-north-1",
+    "configuration" : "Debug",
+    "framework"     : "net9.0",
+    "self-contained" : false,
+    "application"    : "testapp",
+    "environment"    : "Testapp-env",
+    "app-path"       : "/",
+    "iis-website"    : "Default Web Site",
+    "enable-xray"    : false,
+    "enhanced-health-type" : "enhanced",
+    "additional-options"   : ""
+}

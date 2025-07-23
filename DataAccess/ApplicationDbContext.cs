@@ -42,14 +42,17 @@ namespace DataAccess
             //     return _configuration.GetConnectionString("DefaultConnection");
             // }
 
-            // _logger.LogInformation("Using Prod environment variables for database connection string.");
+            _logger.LogInformation("Using Prod environment variables for database connection string.");
 
-            // var dbName = _configuration["DB_NAME"];
-            // var dbHost = _configuration["DB_HOST"];
-            // var dbUsername = _configuration["DB_USERNAME"];
-            // var dbPassword = _configuration["DB_PASSWORD"];
+            var dbName = _configuration["DB_NAME"];
+            var dbHost = _configuration["DB_HOST"];
+            var dbUsername = _configuration["DB_USERNAME"];
+            var dbPassword = _configuration["DB_PASSWORD"];
 
-            // return $"Server={dbHost};Database={dbName};MultipleActiveResultSets=true;User Id={dbUsername};Password={dbPassword}";
+            _logger.LogInformation("Database Name: {DbName}, Host: {DbHost}, Username: {DbUsername}", dbName, dbHost, dbUsername);
+
+            return $"Server={dbHost};Database={dbName};MultipleActiveResultSets=true;Encrypt=true;TrustServerCertificate=True;User Id={dbUsername};Password={dbPassword}";
+            
         }
 
         public DbSet<Appointment> Appointments { get; set; }
